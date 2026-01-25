@@ -1,13 +1,15 @@
-import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
+// Ensure this IP is correct (use your 'wlan0' IP from 'ip addr show')
+export const BASE_URL = 'http://192.168.1.12:8000'; 
 
-export const BASE_URL = 'http://127.0.0.1:8000'
-
-const api= axios.create({
-    base_URL:{BASE_URL}
+const api = axios.create({
+    baseURL: BASE_URL,
+    timeout: 10000,
 });
 
+// 1. Request Interceptor: Attach Token
 api.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('userToken');
@@ -19,48 +21,62 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 2. The Loop-Proof Error Handler
+// 2. Response Interceptor: Handle 401s
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // IF error is 401 AND we haven't retried yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // IF error is 401 Unauthorized
+    if (error.response?.status === 401) {
       
-      // 🛑 CRITICAL FIX: If the URL that failed was ALREADY '/refresh', stop!
-      // This prevents the infinite loop.
-      if (originalRequest.url.includes('/refresh')) {
+      // 🛑 STOPPER 1: If we already tried to fix this request, don't try again.
+      if (originalRequest._retry) {
+        return Promise.reject(error);
+      }
+
+      // 🛑 STOPPER 2: If the URL that failed WAS the refresh endpoint, 
+      // it means our Refresh Token is expired too. STOP.
+      // Adjust '/refresh' to match your actual backend URL exactly
+      if (originalRequest.url.includes('refresh')) {
+        // Optional: Trigger global logout here
+        await AsyncStorage.clear(); 
         return Promise.reject(error);
       }
 
       originalRequest._retry = true;
 
       try {
-        // Try to get a new token
-        const userToken = await AsyncStorage.getItem('userToken'); // Or refresh token if you store it separately
+        console.log("Token expired. Attempting refresh...");
+        const userToken = await AsyncStorage.getItem('userToken');
         
-        // Call your backend refresh endpoint
-        // Adjust '/refresh' to match your actual backend route
-        const response = await axios.post(`${BASE_URL}/refresh`, {}, {
+        // Call backend to get new token
+        // Note: We create a NEW axios instance for this call to avoid circular loops
+        const response = await axios.post("/refresh", {}, {
            headers: { Authorization: `Bearer ${userToken}` }
         });
 
         const { access_token } = response.data;
+        
+        if (!access_token) throw new Error("No token returned");
 
         // Save new token
         await AsyncStorage.setItem('userToken', access_token);
 
-        // Update the header and retry the original failed request
+        // Update default headers for future requests
         api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-        originalRequest.headers['Authorization'] = `Bearer ${access_token}`;
         
+        // Update the failed request's headers and retry it
+        originalRequest.headers['Authorization'] = `Bearer ${access_token}`;
         return api(originalRequest);
 
       } catch (refreshError) {
-        // If refresh fails, we are truly logged out.
-        console.log("Refresh failed - Session expired.");
-        // We reject so the UI knows to show the Login Screen
+        console.log("Refresh failed - Session completely expired.");
+        
+        // 🛑 FINAL FAILSAFE: Clear everything so the user is forced to Login
+        await AsyncStorage.removeItem('userToken');
+        await AsyncStorage.removeItem('userInfo');
+        
         return Promise.reject(refreshError);
       }
     }

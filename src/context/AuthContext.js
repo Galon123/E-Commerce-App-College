@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect} from "react";
+import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
 
 
@@ -32,13 +32,6 @@ export const AuthProvider = ({ children }) =>{
     const login = async(username,password) =>{
         setIsLoading(true);
 
-
-        const token = data.token || data.access_token || data.accessToken;
-      
-      if (!token) {
-        throw new Error("No token found in server response");
-      }
-
         try{
 
             const formData = new URLSearchParams();
@@ -46,7 +39,7 @@ export const AuthProvider = ({ children }) =>{
             formData.append("username",username);
             formData.append("password",password);
             
-            await api.post("/login",formData.toString(),{
+            const response=await api.post("/login",formData.toString(),{
                 headers : { 'Content-Type' : 'application/x-www-form-urlencoded'}
             })
 
@@ -56,8 +49,11 @@ export const AuthProvider = ({ children }) =>{
         }
         catch(error){
             console.log("Login Failed ",error);
+        }
+        finally{
             setIsLoading(false);
         }
+
     }
 
     const logout = async()=>{

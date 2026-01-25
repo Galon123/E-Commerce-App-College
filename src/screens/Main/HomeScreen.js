@@ -1,5 +1,5 @@
-import React,{useContext} from "react";
-import { View, Text, Button, StyleSheet } from 'react-native'
+import { useContext } from "react";
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { AuthContext } from "../../context/AuthContext";
 
 
@@ -8,7 +8,7 @@ export default function HomeScreen (){
 
     return(
         <View style={styles.container}>
-            <Text style={styles.text}>Welcome, {user}</Text>
+            <Text style={styles.text}>Welcome, {user?.username}</Text>
             <Text style={styles.subText}>You are logged in</Text>
             <Button title = 'Logout' onPress={logout}/>
         </View>

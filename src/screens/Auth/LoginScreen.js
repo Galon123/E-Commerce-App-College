@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { AuthContext } from "../../context/AuthContext";
+import { useContext, useState } from "react";
+import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import RegisterScreen from "./RegisterScreen";
+import { AuthContext } from "../../context/AuthContext";
 
 
 
@@ -36,7 +35,7 @@ export default function LoginScreen({ navigation }){
                         <TextInput
                             placeholder='Username'
                             value={username}
-                            onChange={setUsername}
+                            onChangeText={setUsername}
                         />
                     </View>
 
@@ -45,7 +44,7 @@ export default function LoginScreen({ navigation }){
                         <TextInput
                             placeholder='Password'
                             value={password}
-                            onChange={setPassword}
+                            onChangeText={setPassword}
                         />
                     </View>
                     <TouchableOpacity onPress={handleLogin} disabled={isLoading}>

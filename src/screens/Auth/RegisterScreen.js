@@ -1,10 +1,10 @@
-import React,{ useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, TextInput, Alert, ScrollView  } from 'react-native'
-import { useForm,Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import api, { BASE_URL } from '../../services/api'
+import api from '../../services/api'
 // import { useNavigation } from '@react-navigation/native'
 
 //Config
@@ -43,13 +43,26 @@ export default function RegisterScreen({ navigation }){
                 username: data.fullName,
                 email: data.email,
                 password: data.password,
-                phone_no: data.phone_no
+                phone_no: data.phone_no,
+                confirm_password: data.confirmPassword
             })
             Alert.alert("Registered Successfully")
         }
-        catch(error){
-            console.log(error);
-            Alert.alert("Error. Registering Failed")
+        catch (error) {
+            if (error.response) {
+                // 👇 THIS IS THE KEY LINE. Look at your terminal/Metro logs for this!
+                console.log("Validation Error Details:", JSON.stringify(error.response.data, null, 2));
+        
+                // Show the specific error to the user
+                const serverMsg = error.response.data.detail || "Invalid inputs";
+                // If detail is an array (FastAPI default), verify specific field
+                const displayMsg = Array.isArray(serverMsg) ? serverMsg[0].msg : serverMsg;
+        
+                Alert.alert("Registration Failed", JSON.stringify(displayMsg));
+            } else {
+                console.log(error);
+                Alert.alert("Error", "Network Error");
+            }
         }
         finally{
             setIsLoading(false)
