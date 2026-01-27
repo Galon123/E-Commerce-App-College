@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { z } from 'zod'
 import colors from '../../constants/colors'
@@ -71,14 +71,16 @@ export default function RegisterScreen({ navigation }){
     }
 
     return(
-        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:colors.bg}}>
             <Pressable style={{flex:1}}>
               <KeyboardAvoidingView
               behavior={Platform.OS == 'ios'? "padding":"height" }
               style={styles.card}
               >
                 <ScrollView contentContainerStyle={{flexGrow:1,justifyContent:'center'}} showsVerticalScrollIndicator={false}>
-                    
+                    <Image source={require('../../../assets/Logo.png')}
+                        style={styles.logo}
+                    />
                     <Text style ={styles.headerText}>Create an Account</Text>
                     <View>
                         <Text style={styles.inputHeader}>Username</Text>
@@ -192,27 +194,33 @@ const styles = StyleSheet.create({
         flex:1,
         height:'80%',
         width:'100%',
-        marginVertical:60,
+        marginVertical:25,
         padding:20
+    },
+    logo:{
+        width:80,
+        height:80,
+        alignSelf:'center'
     },
     headerText:{
         alignSelf:'center',
         fontSize:28,
         fontWeight:'bold',
         fontStyle:'normal',
-        margin:10
+        margin:10,
+        color:colors.text
     },
     inputHeader:{
         fontWeight:'500',
         fontSize:15,
-        margin:5
+        marginVertical:5,
+        color:colors.text
     },
     inputField:{
         borderWidth:1,
         borderColor:'black',
-        borderRadius:15,
-        backgroundColor:'white',
-        margin:0
+        borderRadius:5,
+        backgroundColor:'#f0f0f0'
     },
     button:{
         alignItems:'center',
@@ -227,11 +235,13 @@ const styles = StyleSheet.create({
     },
     register:{
         fontSize:18,
-        fontWeight:'600'
+        fontWeight:'600',
+        color:colors.text
     },
     footer:{
         alignSelf:'center',
         fontStyle:'italic',
-        fontSize:14
+        fontSize:14,
+        color:colors.text
     }
 })
