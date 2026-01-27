@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -24,9 +24,9 @@ export default function LoginScreen({ navigation }){
     }
 
     return(
-        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-            <KeyboardAvoidingView behavior ={Platform.OS == 'ios'? 'padding':'height'}>
-                <View>
+        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#f0b7b7'}}>
+            <KeyboardAvoidingView behavior ={Platform.OS == 'ios'? 'padding':'height'} style={{backgroundColor:'#5fa2d8',flex:1}}>
+                <View style={styles.container}>
                     <Text>Welcome</Text>
                     <Text>Log in to continue</Text>
                     
@@ -58,3 +58,9 @@ export default function LoginScreen({ navigation }){
         </SafeAreaView>
     );
 }
+
+
+const styles = StyleSheet.create({
+    container:{
+    }
+})

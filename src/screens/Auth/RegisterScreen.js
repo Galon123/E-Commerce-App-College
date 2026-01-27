@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { z } from 'zod'
+import colors from '../../constants/colors'
 import api from '../../services/api'
-// import { useNavigation } from '@react-navigation/native'
 
 //Config
 const COLLEGE_DOMAIN = '@gectcr.ac.in'
@@ -70,16 +70,17 @@ export default function RegisterScreen({ navigation }){
     }
 
     return(
-        <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}>
-            <KeyboardAvoidingView
-            behavior={Platform.OS == 'ios'? "padding":"height" }
-            style={{flex:1}}
-            >
-                <ScrollView>
-                    <Text>Create an Account</Text>
+        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:colors.Misty_Blue}}>
+            <Pressable style={{flex:1}}>
+              <KeyboardAvoidingView
+              behavior={Platform.OS == 'ios'? "padding":"height" }
+              style={styles.card}
+              >
+                <ScrollView contentContainerStyle={{flexGrow:1,justifyContent:'center'}} showsVerticalScrollIndicator={false}>
+                    <Text style ={styles.headerText}>Create an Account</Text>
                     
                     <View>
-                        <Text>Username</Text>
+                        <Text style={styles.inputHeader}>Username</Text>
                         <Controller
                             control={control}
                             name="fullName"
@@ -88,6 +89,7 @@ export default function RegisterScreen({ navigation }){
                                     placeholder='Username'
                                     value={value}
                                     onChangeText={onChange}
+                                    style = {styles.inputField}
                                 />
                             )}
                         />
@@ -95,7 +97,7 @@ export default function RegisterScreen({ navigation }){
                     </View>
 
                     <View>
-                        <Text>E-mail</Text>
+                        <Text style={styles.inputHeader}>E-mail</Text>
                         <Controller
                             control={control}
                             name="email"
@@ -104,6 +106,7 @@ export default function RegisterScreen({ navigation }){
                                     placeholder='placeholder@gectcr.ac.in'
                                     value={value}
                                     onChangeText={onChange}
+                                    style = {styles.inputField}
                                 />
                             )}
                         />
@@ -111,7 +114,7 @@ export default function RegisterScreen({ navigation }){
                     </View>
 
                     <View>
-                        <Text>Phone Number</Text>
+                        <Text style={styles.inputHeader}>Phone Number</Text>
                         <Controller
                             control={control}
                             name="phone_no"
@@ -120,6 +123,7 @@ export default function RegisterScreen({ navigation }){
                                     placeholder='9023948576'
                                     value={value}
                                     onChangeText={onChange}
+                                    style = {styles.inputField}
                                 />
                             )}
                         />
@@ -127,7 +131,7 @@ export default function RegisterScreen({ navigation }){
                     </View>
 
                     <View>
-                        <Text>Password</Text>
+                        <Text style={styles.inputHeader}>Password</Text>
                         <Controller
                             control={control}
                             name="password"
@@ -136,6 +140,7 @@ export default function RegisterScreen({ navigation }){
                                     placeholder='Password@123'
                                     value={value}
                                     onChangeText={onChange}
+                                    style = {styles.inputField}
                                 />
                             )}
                         />
@@ -143,7 +148,7 @@ export default function RegisterScreen({ navigation }){
                     </View>
 
                     <View>
-                        <Text>Confirm Password</Text>
+                        <Text style={styles.inputHeader}>Confirm Password</Text>
                         <Controller
                             control={control}
                             name="confirmPassword"
@@ -152,6 +157,7 @@ export default function RegisterScreen({ navigation }){
                                     placeholder='Password@123'
                                     value={value}
                                     onChangeText={onChange}
+                                    style = {styles.inputField}
                                 />
                             )}
                         />
@@ -172,7 +178,39 @@ export default function RegisterScreen({ navigation }){
                     </TouchableOpacity>
 
                 </ScrollView>
-            </KeyboardAvoidingView>
+              </KeyboardAvoidingView>
+            </Pressable>  
         </SafeAreaView>
     )
 }
+
+
+const styles = StyleSheet.create({
+    card:{
+        flex:1,
+        height:'80%',
+        marginVertical:100,
+        padding:30,
+        borderWidth:2,
+        borderRadius:15,
+        backgroundColor:colors.Peach
+    },
+    headerText:{
+        alignSelf:'center',
+        fontSize:24,
+        fontWeight:'bold',
+        fontStyle:'normal',
+        margin:10
+    },
+    inputHeader:{
+        fontWeight:'500',
+        fontSize:15
+    },
+    inputField:{
+        borderWidth:1,
+        borderColor:'black',
+        borderRadius:20,
+        backgroundColor:'white',
+        margin:0
+    }
+})
