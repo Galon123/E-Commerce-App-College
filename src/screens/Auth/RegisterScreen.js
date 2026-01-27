@@ -7,6 +7,7 @@ import { z } from 'zod'
 import colors from '../../constants/colors'
 import api from '../../services/api'
 
+
 //Config
 const COLLEGE_DOMAIN = '@gectcr.ac.in'
 
@@ -70,15 +71,15 @@ export default function RegisterScreen({ navigation }){
     }
 
     return(
-        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:colors.Misty_Blue}}>
+        <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center'}}>
             <Pressable style={{flex:1}}>
               <KeyboardAvoidingView
               behavior={Platform.OS == 'ios'? "padding":"height" }
               style={styles.card}
               >
                 <ScrollView contentContainerStyle={{flexGrow:1,justifyContent:'center'}} showsVerticalScrollIndicator={false}>
-                    <Text style ={styles.headerText}>Create an Account</Text>
                     
+                    <Text style ={styles.headerText}>Create an Account</Text>
                     <View>
                         <Text style={styles.inputHeader}>Username</Text>
                         <Controller
@@ -167,14 +168,15 @@ export default function RegisterScreen({ navigation }){
                     <TouchableOpacity
                         onPress={handleSubmit(onRegister)}
                         disabled={isLoading}
+                        style={styles.button}
                     >
-                        <Text>{isLoading? 'Submitting' : 'Register'}</Text>
+                        <Text style={styles.register}>{isLoading? 'Submitting' : 'Register'}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={()=>navigation.navigate("Login")}
                     >
-                        <Text>Already have an Account? <Text style={{fontWeight:'bold', color:'#007AFF'}}>Log In</Text></Text>
+                        <Text style={styles.footer}>Already have an Account? <Text style={{fontWeight:'bold', color:'#007AFF'}}>Log In</Text></Text>
                     </TouchableOpacity>
 
                 </ScrollView>
@@ -189,28 +191,47 @@ const styles = StyleSheet.create({
     card:{
         flex:1,
         height:'80%',
-        marginVertical:100,
-        padding:30,
-        borderWidth:2,
-        borderRadius:15,
-        backgroundColor:colors.Peach
+        width:'100%',
+        marginVertical:60,
+        padding:20
     },
     headerText:{
         alignSelf:'center',
-        fontSize:24,
+        fontSize:28,
         fontWeight:'bold',
         fontStyle:'normal',
         margin:10
     },
     inputHeader:{
         fontWeight:'500',
-        fontSize:15
+        fontSize:15,
+        margin:5
     },
     inputField:{
         borderWidth:1,
         borderColor:'black',
-        borderRadius:20,
+        borderRadius:15,
         backgroundColor:'white',
         margin:0
+    },
+    button:{
+        alignItems:'center',
+        backgroundColor:colors.Green,
+        borderRadius:5,
+        borderWidth:1,
+        borderColor:colors.Charcoal,
+        padding:5,
+        margin:5,
+        width:'55%',
+        alignSelf:'center'
+    },
+    register:{
+        fontSize:18,
+        fontWeight:'600'
+    },
+    footer:{
+        alignSelf:'center',
+        fontStyle:'italic',
+        fontSize:14
     }
 })
