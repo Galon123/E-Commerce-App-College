@@ -1,13 +1,14 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ItemCard from '../../components/ItemCard';
 import colors from '../../constants/colors';
+import { AuthContext } from '../../context/AuthContext';
 import api from '../../services/api';
 
+export default function FeedScreen (){
 
-export default function FeedScreen ({ navigation }){
+    const { logout } = useContext(AuthContext);
 
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -30,29 +31,7 @@ export default function FeedScreen ({ navigation }){
     useEffect(()=>{
         fetchItems()
     },[])
-
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            // 1. Set the Title
-            headerTitle: "Feed", 
-            
-            // 2. Add a "Cart" button on the right
-            headerRight: () => (
-                <TouchableOpacity 
-                    onPress={() => console.log("Go to Cart")} 
-                    style={{ marginRight: 15 }} // Add spacing so it's not stuck to the edge
-                >
-                    <Ionicons name="cart-outline" size={24} color="black" />
-                </TouchableOpacity>
-            ),
-
-            // Optional: Style the header background
-            headerStyle: {
-                backgroundColor: '#fff',
-            },
-            headerTintColor: '#000', // Color of back button and title
-        });
-    }, [navigation]);
+    
 
     if(isLoading){
         return(
@@ -66,6 +45,15 @@ export default function FeedScreen ({ navigation }){
     return(
         <SafeAreaView>
             <FlatList
+                ListHeaderComponent={
+                    <View style={styles.topBar}>
+                        <Text style={styles.headerText}>MarketPlace</Text>
+                        <TouchableOpacity style={{alignSelf:'center',backgroundColor:'red'}} onPress={()=>logout()}>
+                            <Text>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
+            }
                 data={items}
                 renderItem={({ item })=>(
                     <ItemCard
@@ -82,5 +70,16 @@ export default function FeedScreen ({ navigation }){
 }
 
 const styles = StyleSheet.create({
-    
+    topBar:{
+        justifyContent:'center',
+        borderWidth:2,
+        borderRadius:10,
+        margin:5,
+        padding:5,
+        flexDirection:'row'
+    },
+    headerText:{
+        fontSize:38,
+        fontWeight:'bold'
+    }
 })
