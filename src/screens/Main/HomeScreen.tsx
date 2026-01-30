@@ -12,9 +12,9 @@ export default function FeedScreen (){
 
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const fetchItems = async() =>{
-        setIsLoading(true);
         try{
             const response = await api.get("/items/feed")
             setItems(response.data);
@@ -26,6 +26,12 @@ export default function FeedScreen (){
         finally{
             setIsLoading(false)
         }
+    }
+
+    const handleRefresh = async() => {
+        setIsRefreshing(true);
+        await fetchItems();
+        setIsRefreshing(false);
     }
 
     useEffect(()=>{
@@ -64,6 +70,8 @@ export default function FeedScreen (){
                 keyExtractor={(item)=>item.id.toString()}
                 numColumns={1}
                 showsVerticalScrollIndicator={false}
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
             />
         </SafeAreaView>
     )
@@ -71,7 +79,7 @@ export default function FeedScreen (){
 
 const styles = StyleSheet.create({
     topBar:{
-        justifyContent:'center',
+        justifyContent:'space-between',
         borderWidth:2,
         borderRadius:10,
         margin:5,

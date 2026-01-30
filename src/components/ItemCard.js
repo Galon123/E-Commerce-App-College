@@ -46,12 +46,12 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 25,
         color: '#333',
         marginTop:2
     },
     price: {
-        fontSize: 14,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#00b894',
         marginTop: 2,
