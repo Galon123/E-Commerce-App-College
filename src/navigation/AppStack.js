@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ItemDetailScreen from '../components/ItemDetail';
 import FeedScreen from "../screens/Main/HomeScreen";
 
 
@@ -8,6 +9,7 @@ export default function AppStack(){
     return(
         <Stack.Navigator screenOptions={{headerShown:false}}>
             <Stack.Screen name='Feed' component={FeedScreen}/>
+            <Stack.Screen name='ItemDetail' component={ItemDetailScreen} options={{title:'Product Details'}}/>
         </Stack.Navigator>
     );
 }

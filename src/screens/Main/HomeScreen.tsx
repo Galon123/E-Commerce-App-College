@@ -4,9 +4,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ItemCard from '../../components/ItemCard';
 import colors from '../../constants/colors';
 import { AuthContext } from '../../context/AuthContext';
+import NavBar from '../../navigation/Navbar';
 import api from '../../services/api';
 
-export default function FeedScreen (){
+export default function FeedScreen ({ navigation }){
 
     const { logout } = useContext(AuthContext);
 
@@ -60,11 +61,11 @@ export default function FeedScreen (){
                     </View>
                     
             }
-                data={items}
+                data={items.filter((item)=>item.status=="ACTIVE")}
                 renderItem={({ item })=>(
                     <ItemCard
                         item={item}
-                        onPress={()=>console.log("Clicked Item : ", item.title)}
+                        onPress={()=>navigation.navigate('ItemDetail',{ item: item })}
                     />
                 )}
                 keyExtractor={(item)=>item.id.toString()}
@@ -73,6 +74,7 @@ export default function FeedScreen (){
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
             />
+            <NavBar/>
         </SafeAreaView>
     )
 }
