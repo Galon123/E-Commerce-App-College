@@ -5,7 +5,6 @@ import colors from "../../constants/colors";
 import { AuthContext } from "../../context/AuthContext";
 
 
-
 export default function LoginScreen({ navigation }){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -49,11 +48,13 @@ export default function LoginScreen({ navigation }){
                             style={styles.inputField}
                         />
                     </View>
-                    <TouchableOpacity onPress={handleLogin} disabled={isLoading} style={styles.button}>
-                        <Text style={styles.login}>{isLoading? 'Logging In': 'Log In'}</Text>
+                    <TouchableOpacity style={styles.button} disabled={isLoading} onPress={handleLogin}>
+                        <Text style={styles.login}>{isLoading ? 'Logging In' : 'Login'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>navigation.navigate("Register")}>
-                        <Text style={styles.footer}>Don't have an account? <Text style={{fontWeight:'bold', color:'#007AFF'}}>Sign Up</Text></Text>
+                        <Text style={styles.footer}>Don't have an account? 
+                            <Text style={{fontWeight:'bold', color:colors.primary}}>Sign Up</Text>
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
@@ -66,7 +67,10 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'center',
-        padding:50
+        padding:50,
+        backgroundColor: colors.card,
+        color: colors.text,
+        borderRadius: 5
     },
     mainText:{
         fontSize:45,
@@ -77,42 +81,41 @@ const styles = StyleSheet.create({
         fontSize:14,
         alignSelf:'center',
         fontWeight:'400',
-        fontStyle:'italic',
-        paddingBottom:40
+        paddingBottom:40,
+        color: colors.muted
     },
     inputHeader:{
         fontWeight:'500',
-        fontSize:15,
-        marginVertical:5
+        fontSize:15
     },
     inputField:{
         borderWidth:1,
-        borderColor:'black',
+        borderColor:colors.card_border_swatch,
         borderRadius:5,
-        backgroundColor:'#f0f0f0',
+        backgroundColor:colors.bg,
         marginVertical:5,
-        marginBottom:20
+        marginBottom:20,
     },
     button:{
         alignItems:'center',
-        backgroundColor:colors.Green,
+        backgroundColor:colors.primary,
         borderRadius:5,
-        borderWidth:1,
-        borderColor:colors.Charcoal,
         padding:10,
         margin:15,
-        width:'55%',
+        width:'100%',
         alignSelf:'center'
     },
     login:{
         alignSelf:'center',
         fontSize:18,
-        fontWeight:'600'
+        fontWeight:'600',
+        color: colors.card
     },
     footer:{
         alignSelf:'center',
         fontStyle:'italic',
-        fontSize:14
+        fontSize:12,
+        color: colors.muted
     }
 
 })
