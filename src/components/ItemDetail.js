@@ -50,5 +50,5 @@ const styles = StyleSheet.create({
   divider: { height: 1, backgroundColor: '#eee', marginVertical: 15 },
   sectionHeader: { fontSize: 18, fontWeight: '600', marginBottom: 5 },
   description: { fontSize: 16, color: '#555', lineHeight: 24 },
-  footer: { padding: 20, borderTopWidth: 1, borderTopColor: '#eee' }
+  footer: { marginBottom:20, padding: 20, borderTopWidth: 1, borderTopColor: '#eee' }
 });

@@ -7,7 +7,7 @@ export default function CustomTabButton({children, onPress}){
   return (
     <TouchableOpacity
         style={styles.container}
-        onPress={()=>onPress}
+        onPress={onPress}
         activeOpacity={0.8}
     >
         <View style={styles.button}>
@@ -19,6 +19,7 @@ export default function CustomTabButton({children, onPress}){
 
 const styles = StyleSheet.create({
     container:{
+        top:-5,
         justifyContent:'center',
         alignItems:'center'
     },
